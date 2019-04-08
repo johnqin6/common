@@ -1,0 +1,128 @@
+/**
+*  通用类 
+**/
+
+/* 主题背景色-白色 */
+.theme-bgcolor-white {
+    background-color: white;
+}
+
+/* 外边距水平居中 */
+.margin-auto {
+    margin: 0 auto;
+}
+
+/* 定位水平居中 */
+.positon-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* 下划线 */
+.underline {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* 下划线消失 */
+.underline-none {
+    border-bottom: none;
+}
+
+/*单行 溢出省略 */
+.overflow-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*多行 溢出省略 */
+.overflow-ellipsis-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+/* 左浮动 */
+.left {
+    float: left;
+}
+
+/* 右浮动 */
+.right {
+    float: right;
+}
+
+/* 清除浮动 */
+.clearfix {
+    overflow: auto;
+}
+
+/* 横向滚动 */
+.overflow-y {
+    width: 100%;
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+/* 转行内块级元素 */
+.inline-block {
+    display: inline-block;
+}
+
+/* 显示 */
+.block {
+    display: block;
+}
+
+/* 隐藏 */
+.hidden {
+    display: hidden;
+}
+
+/* 伪元素--前缀 */
+.prefix {
+    position: relative;
+    padding-left: 20px;
+}
+
+.prefix::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* 伪元素-后缀 */
+.suffix {
+    position: relative;
+}
+
+.suffix::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+/* 伪元素左右缀 */
+.left-and-right__suffix {
+    position: relative;
+    padding-left: 20px;
+}
+
+.left-and-right__suffix::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.left-and-right__suffix::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+}
