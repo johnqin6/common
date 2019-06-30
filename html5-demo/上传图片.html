@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>上传图片</title>
+  <style>
+    .img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none;
+      width: 100px;
+      height: 100px;
+    }
+    .update-img {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      border: 1px solid #ccc;
+      text-align: center;
+      line-height: 100px;
+    }
+    .update {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: 100px;
+      opacity: 0;
+    }
+
+
+    .update-box {
+      overflow: hidden;
+    }
+    .more-img {
+      width: 100px;
+      height: 100px;
+    }
+    .float-lt {
+      float: left;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- 单张上传 -->
+    <p class="update-img" id="updateImg">上传图片
+      <img id="prewImage" class="img">
+      <input type="file" id="updateImage" class="update"
+      accept="image/jpg,image/jpeg,image/png,image/PNG" >
+    </p>
+    <!-- 多张图片上传 -->
+    <div class="update-box">
+      <p class="update-img float-lt" id="imgsUpdate">上传图片
+        <input type="file" id="updateImage1" class="update"
+          accept="image/jpg,image/jpeg,image/png,image/PNG" >
+      </p>
+    </div>
+  </div>
+</body>
+</html>
+<script>
+  var prewImage = document.getElementById('prewImage');
+  var updateImage = document.getElementById('updateImage');
+  updateImage.onchange = function(e) {
+    var reader = null;
+    if(window.FileReader) { // 判断浏览器是否支持读取文件
+      reader = new FileReader();
+    }else {
+      alert("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
+    }
+    // 获取文件路径
+    var filePath = this.files[0];
+    reader.readAsDataURL(filePath); // 获取文件数据
+    reader.onload = function() {
+      prewImage.src = this.result;
+      prewImage.style.display = 'block';
+    }
+  }
+</script>
+
+<script>
+  var updateImage1 = document.getElementById('updateImage1')
+  var updateBox = document.querySelector('.update-box')
+  updateImage1.onchange = function() {
+    var reader = new FileReader()
+    var filePath = this.files[0];
+    reader.readAsDataURL(filePath);
+    reader.onload = function() {
+      var imgDom = document.createElement('img');
+      imgDom.src = this.result;
+      imgDom.className = 'more-img float-lt';
+      updateBox.appendChild(imgDom)
+    }
+  }
+</script>
