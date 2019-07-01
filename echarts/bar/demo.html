@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>柱状图案例</title>
+  <script src="../../node_modules/echarts/dist/echarts.js"></script>
+  <style>
+    .echart {
+      float: left;
+      width: 600px;
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <div class="echart" id="barEchart1"></div>
+  <div class="echart" id="barEchart2"></div>
+  <div class="echart" id="barEchart3"></div>
+
+</body>
+</html>
+<script>
+  // 基于准备好的dom，初始化echarts实例
+  var barEchart1 = echarts.init(document.getElementById('barEchart1'))
+  var barEchart2 = echarts.init(document.getElementById('barEchart2'))
+  var barEchart3 = echarts.init(document.getElementById('barEchart3'))
+
+  // 柱状图入门实例
+  barEchart1.setOption({
+    title: { // 标题
+      text: '柱状图'
+    },
+    tooltip: {},  // 提示框组件
+    legend: {   // 图例组件
+      data: ['销量']
+    },
+    xAxis: { // x轴
+      data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+    },
+    yAxis: {},  // y轴
+    series: [{
+      name: '销量', // 图例名称
+      type: 'bar',  // 图表类型：柱状图
+      data: [5, 20, 36, 10, 10, 20]  // 数据
+    }]
+  })
+
+  // 多图例的柱状图
+  barEchart2.setOption({
+    legend: {}, // 图例组件
+    tooltip: {}, // 提示框组件
+    dataset: {   // 数据集（dataset）组件用于单独的数据集声明
+      source: [   // 原始数据
+        ['product', '2015', '2016', '2017'],
+        ['电视', 43, 85.3, 93],
+        ['电脑', 83.1, 73, 55],
+        ['笔记本电脑', 86, 65.2, 81],
+        ['手机', 72, 53.9, 39.1]
+      ]
+    },
+    xAxis: {
+      type: 'category'  // 坐标轴类型：类目轴（默认值），适用于离散的类目数据，为该类型时必须通过 data 设置类目数据
+    },
+    yAxis: {},
+    color: ['red', 'yellow', 'blue'], // 设置图例柱形的颜色
+    series: [
+      { 
+        type: 'bar',
+        barWidth: 20, // 图例的宽度
+        itemStyle: {  // 图例样式
+          barBorderRadius: [10, 10, 0, 0] // 圆角
+        }
+      },
+      { type: 'bar' },
+      { type: 'bar' }
+    ]
+  })
+
+  // 比较完善的柱状图
+  barEchart3.setOption({
+    title: {
+      text: '某地区蒸发量和降水量',  // 主标题
+      subtext: '初属虚构',  // 副标题
+    },
+    tooltip: {  // 提示框组件
+      trigger: 'axis'  // 触发类型：坐标轴触发，主要在柱状图，折线图等会使用类目轴的图表中使用
+    },
+    toolbox: {  // 工具栏
+      show: true,  // 是否显示：显示
+      feature: {   // 是否在鼠标 hover 的时候显示每个工具 icon 的标题
+        dataView: { show: true, readOnly: false }, // 数据视图
+        magicType: { show: true, type: ['line', 'bar']}, // 动态类型转换['折线图'，'柱状图']
+        restore: { show: true }, // 重置
+        saveAsImage: { show: true }, // 导出图片
+        dataZoom: { show: true }  // 数据缩放还原
+      }
+    },
+    calculable: true, // 是否显示拖拽用的手柄（手柄能拖拽调整选中范围）
+    xAxis: [
+      { 
+        type: 'category', // 坐标轴类型：类目轴（默认值）
+        data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+      }
+    ],
+    yAxis: [
+      {
+        type: 'value',  // 坐标轴类型：数值轴，适用于连续数据
+      }
+    ],
+    series: [
+      {
+        name: '蒸发量',
+        type: 'bar',
+        data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+        markPoint : {  // 图表标注
+          data : [
+            {type : 'max', name: '最大值'},
+            {type : 'min', name: '最小值'}
+          ]
+        },
+        markLine : {  // 图表标线
+          data : [
+            {type : 'average', name: '平均值'}
+          ]
+        }
+      },
+      {
+        name:'降水量',
+        type:'bar',
+        data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+        markPoint : {
+          data : [
+            {name : '年最高', value : 182.2, xAxis: 7, yAxis: 183},
+            {name : '年最低', value : 2.3, xAxis: 11, yAxis: 3}
+          ]
+        },
+        markLine : {
+          data : [
+            {type : 'average', name : '平均值'}
+          ]
+        }
+      }
+    ]
+  })
+
+</script>
+<script>
+ /**
+  * echarts 图标属性配置
+  * title: 图标标题
+  * options:  配置选项
+  *   + id: 组件id, 默认不指定
+  *   + show: 是否显示标题组件，默认显示（只要使用标题组件）
+  *   + text: 主标题文本，支持使用 \n 换行
+  *   + link: 主标题文本超链接
+  *   + target: 指定窗口打开主标题超链接 默认 'blank'
+  *     * self: 当前窗口打开
+  *     * blank：新窗口打开
+  *   + textStyle: 主标题样式
+  *     * color: 字体颜色 默认 '#333'
+  *     * fontStyle: 字体风格 默认 'normal', ['normal(正常)', 'italic(斜体)', 'oblique(倾斜)']
+  *     * fontWeight: 字体粗细 默认 'normal', ['normal', 'bold', 'bolder', 'lighter'] 或100,200,300,...
+  *     * fontFamily: 字体系列
+  *     * fontSize: 字体大小 默认18  
+  *     * lineHeight: 字体行高 
+  *         可以设置rich属性 rich(为子元素设置) 中如果没有设置 lineHeight，则会取父层级的 lineHeight
+  *     * width: 宽
+  *     * hight: 高
+  *     * textBorderWidth: 文字本身的描边宽度 默认 0
+  *     * textBorderColor: 文字本身的描边宽度 默认 'transparent'
+  *     * textShadowBlur: 文字本身的阴影长度  默认 0
+  *     * textShadowColor: 文字本身的阴影颜色 默认 'transparent'
+  *     * textShowOffsetX: 文字本身的阴影X偏移 默认 0
+  *     * textShowOffsetY: 文字本身的阴影Y偏移 默认 0
+  *     * rich: 设置富文本样式 type: Object
+  *   + subtext: 副标题文本
+  *   + sublink: 副标题超链接
+  *   + subtarget: 指定窗口打开副标题超链接
+  *   + subtextStyle: 副标题样式 
+  *   + textAlign: 整体水平居中方式 默认 'auto' 
+  *     * auto: 自适应
+  *     * left: 居左
+  *     * center: 居中
+  *     * right: 居右
+  *   + textVerticalAlign: 垂直对齐方式 默认 'auto'
+  *     * auto
+  *     * top 
+  *     * bottom
+  *     * middle
+  *   + triggerEvent: 是否触发事件 默认 false
+  *   + padding: 内边距 默认：5  多个方向：[5, 10, 5, 10] 上，右，下，左
+  *   + itemGap: 主副标题之间的距离  默认 10 
+  *   + zlevel: 分层 默认 0 
+  *     所有图形的 zlevel 值。
+  *     zlevel用于 Canvas 分层，不同zlevel值的图形会放置在不同的 Canvas 中，Canvas 分层是一种常见的优化手段。我们可以把一些图形变化频繁（例如有动画）的组件设置成一个单独的zlevel。需要注意的是过多的 Canvas 会引起内存开销的增大，在手机端上需要谨慎使用以防崩溃。
+  *     zlevel 大的 Canvas 会放在 zlevel 小的 Canvas 的上面 
+  *   + z: 控制图形的前后顺序 默认 2 
+  *      z值小的图形会被z值大的图形覆盖 z相比zlevel优先级更低，而且不会创建新的 Canvas
+  *   + left grid 组件离容器左侧的距离
+  *    left 的值可以是像 20 这样的具体像素值，可以是像 '20%' 这样相对于容器高宽的百分比，也可以是 'left', 'center', 'right'。
+  *     如果 left 的值为'left', 'center', 'right'，组件会根据相应的位置自动对齐  
+  *   + top
+  *   + right
+  *   + bottom
+  *   + backgroundColor: 标题背景色  默认 'transparent' 
+  *   + borderColor: 标题的边框颜色 默认 '#ccc'
+  *   + borderWidth: 标题的边框线宽
+  *   + borderRadius: 圆角半径，单位px，支持传入数组分别指定 4 个圆角半径 默认 0 
+  *   + shadowBlur: 图形阴影的模糊大小 
+  *   + shadowColor: 阴影颜色
+  *   + shadowOffsetX: 阴影水平方向上的偏移距离
+  *   + shadowOffsetY: 阴影垂直方向上的偏移距离
+ */
+</script>
