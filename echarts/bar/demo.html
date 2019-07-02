@@ -18,7 +18,9 @@
   <div class="echart" id="barEchart1"></div>
   <div class="echart" id="barEchart2"></div>
   <div class="echart" id="barEchart3"></div>
-
+  <div class="echart" id="barEchart4"></div>
+  <div class="echart" id="barEchart5"></div>
+  <div class="echart" id="barEchart6"></div>
 </body>
 </html>
 <script>
@@ -26,6 +28,9 @@
   var barEchart1 = echarts.init(document.getElementById('barEchart1'))
   var barEchart2 = echarts.init(document.getElementById('barEchart2'))
   var barEchart3 = echarts.init(document.getElementById('barEchart3'))
+  var barEchart4 = echarts.init(document.getElementById('barEchart4'))
+  var barEchart5 = echarts.init(document.getElementById('barEchart5'))
+  var barEchart6 = echarts.init(document.getElementById('barEchart6'))
 
   // 柱状图入门实例
   barEchart1.setOption({
@@ -145,6 +150,141 @@
     ]
   })
 
+  // 坐标轴刻度与标签对齐
+  barEchart4.setOption({
+    title: {
+      text: '坐标轴刻度与标签对齐'
+    },
+    color: ['#3398D8'],  // 图例颜色
+    tooltip: {  // 提示框组件
+      trigger: 'axis', // 触发类型：坐标轴触发
+      axisPointer: {   // 坐标轴指示器，坐标轴触发有效
+        type: 'shadow'   // 默认为直线，可选：'line' | 'shadow'
+      }
+    },
+    grid: {  // 直角坐标系内绘图网格
+      left: '3%', // 控制图表距离上下左右的位置
+      right: '4%',
+      bottom: '3%',
+      containLabel: true  // grid 区域是否包含坐标轴的刻度标签
+    },
+    xAxis: [
+      {
+        type: 'category', // 坐标轴类型：类目轴（默认）
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        axisTick: {  // 坐标轴刻度相关设置
+          alignWithLable: true  // 保证刻度线和标签对齐
+        }
+      }
+    ],
+    yAxis: [
+      {
+        type: 'value'
+      }
+    ],
+    series: [
+      {
+        name: '直接访问',
+        type: 'bar',
+        barWidth: '60%',
+        data: [10, 52, 200, 334, 390, 330, 220]
+      }
+    ]
+  })
+
+  // 图例横置
+  barEchart5.setOption({
+    title: {
+      text: '图例横置'
+    },
+    dataset: { // 数据设置
+      source: [  // 原始数据
+        ['score', 'amount', 'product'],
+        [89.3, 58212, 'Matcha Latte'],
+        [57.1, 78254, 'Milk Tea'],
+        [74.4, 41032, 'Cheese Cocoa'],
+        [50.1, 12755, 'Cheese Brownie'],
+        [89.7, 20145, 'Matcha Cocoa'],
+        [68.1, 79146, 'Tea'],
+        [19.6, 91852, 'Orange Juice'],
+        [10.6, 101852, 'Lemon Juice'],
+        [32.7, 20112, 'Walnut Brownie']
+      ]
+    },
+    grid: { // 直角坐标系内绘图网格
+      containLabel: true
+    },
+    xAxis: {
+      name: 'amount'
+    },
+    yAxis: {
+      type: 'category'  // 坐标轴类型：类目轴（默认）
+    },
+    visualMap: {  // 视觉映射组件
+      orient: 'horizontal', // 对齐方式：水平对齐
+      left: 'center',
+      min: 10,
+      max: 100,
+      text: ['高积分', '低积分'],
+      dimension: 0, // 维度
+      inRange: { // 对应颜色渐变
+        color: ['#D7DA8B', '#E15457']
+      }
+    },
+    series: [
+      {
+        type: 'bar',
+        encode: { // 定义 data 的哪个维度被编码成什么
+          x: 'amount', 
+          y: 'product'
+        }
+      }
+    ]
+  })
+
+  // 组合图表垂直布局
+  barEchart6.setOption({
+    title: {
+      text: '组合图表垂直布局'
+    },
+    dataset: {  // 数据设置
+      source: [  // 原始数据
+        ['product', '2012', '2013', '2014', '2015'],
+        ['Matcha Latte', 41.1, 30.4, 65.1, 53.3],
+        ['Milk Tea', 86.5, 92.1, 85.7, 83.1],
+        ['Cheese Cocoa', 24.1, 67.2, 79.5, 86.4]
+      ]
+    },
+    xAxis: [
+      { 
+        type: 'category', // 坐标轴类型：类目轴
+        gridIndex: 0  // x 轴所在的 grid 的索引
+      },
+      {
+        type: 'category',
+        gridIndex: 1
+      }
+    ],
+    yAxis: [
+      { gridIndex: 0 },
+      { gridIndex: 1 }
+    ],
+    grid: [ // 直角坐标系内绘图网格
+      { bottom: '55%' },
+      { top: '55%' }
+    ],
+    series: [
+      { type: 'bar', seriesLayoutBy: 'row' }, // seriesLayoutBy: row(行) 系列“排布”到 dataset 的行还是列上
+      { type: 'bar', seriesLayoutBy: 'row' },
+      { type: 'bar', seriesLayoutBy: 'row' },
+      { type: 'bar', xAxisIndex: 1, yAxisIndex: 1},
+      { type: 'bar', xAxisIndex: 1, yAxisIndex: 1},
+      { type: 'bar', xAxisIndex: 1, yAxisIndex: 1},
+      { type: 'bar', xAxisIndex: 1, yAxisIndex: 1}
+    ]
+  })
+
+
 </script>
 <script>
  /**
@@ -213,4 +353,66 @@
   *   + shadowOffsetX: 阴影水平方向上的偏移距离
   *   + shadowOffsetY: 阴影垂直方向上的偏移距离
  */
+
 </script>
+
+<!--
+legend: 图例组件
+- type: 图例类型
+  + 'plain': 普通图例，默认值
+  + 'scroll': 可滚动翻页的图例
+- show: 是否显示 默认 true
+- zlevel: canvas分层 默认 0
+- z: 控制图形的前后顺序 默认 2
+- left: 图例组件离容器左侧的距离
+- top
+- right
+- bottom
+- width: 宽 默认 'auto'
+- height: 高 默认 'auto'
+- orinet: 布局朝向 默认 'horizontal' 水平
+- align: 图例标记和文本的对齐 默认 'auto'
+  + auto
+  + left
+  + right
+- padding: 图例内边距 默认 5
+- itemGap: 图例每项之间的距离 10
+- itemWidth: 图例的图形宽度 25
+- itemHeight: 图里的图形高度 14
+- symbolKeepAspect: 如果图标（可能来自系列的 symbol 或用户自定义的 legend.data.icon）
+是 path:// 的形式，是否在缩放时保持该图形的长宽比。默认 true
+- formatter: 用来格式化图例文本，支持字符串模板和回调函数两种形式
+- selectedModel: 图例选择的模式，控制是否可以通过点击图例改变系列的显示状态
+  也可以设成 'single' 或者 'multiple' 使用单选或者多选模式  默认 true
+- inactiveColor: 图例关闭时的颜色 默认 '#ccc'
+- selected: 图例选中状态表
+- textStyle: 图例的公用文本样式
+- tooltip: 图例的 tooltip 配置，配置项同 tooltip 提示框组件
+- data: 图例的数据数组
+  + name: 图例名称
+  + icon: 图例项的 icon
+  + textStyle: 图例项的文本样式
+- backgroundColor: 图例背景色，默认透明
+- borderColor: 图例的边框颜色 默认 ‘#ccc’
+- borderWidth: 图例的边框线宽 1
+- borderRadius: 圆角半径  0 
+- shadowBlur: 图形阴影的模糊大小 
+- shadowColor
+- shadowOffsetX
+- shadowOffsetY
+- scrollDataIndex: 决定当前图例滚动到哪里
+- pageButtonItemGap: 图例控制块中，按钮和页信息之间的间隔
+- pageButtonGap: 图例控制块和图例项之间的间隔
+- pageButtonPosition: 图例控制块的位置
+  + start: 控制块在左或上
+  + end: 按钮快在右或下
+- pageFormatter 图例控制块中，页信息的显示格式
+- pageIcons: 图例控制块的图标
+- pageIconColor: 翻页按钮的颜色 
+- pageIconInativeColor: 翻页按钮不激活时（即翻页到头时）的颜色
+- pageIconSize: 翻页按钮的大小 默认 15
+- pageTextStyle: 图例页信息的文字样式
+- animation: 图例翻页是否使用动画
+- animationDurationUpdate: 图例翻页时的动画时长
+-->
+
