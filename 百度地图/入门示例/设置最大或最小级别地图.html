@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>设置最大或最小级别地图</title>
+  <script src="http://api.map.baidu.com/getscript?v=3.0&ak=Ij3SnGGO0eQlT4aho0rdfeAOs56RqmEq"></script>
+  <style>
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+</body>
+</html>
+<script>
+  // 创建地图实例, 设置地图允许的最小/最大地图级别
+  var map = new BMap.Map('map', {minZoom: 4, maxZoom: 8});
+  // 初始化地图，设置中心点坐标和地图级别
+  map.centerAndZoom(new BMap.Point(116.404, 39.915), 8);
+  map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放 
+  //两秒后移动到广州
+  setTimeout(function() {
+    map.panTo(new BMap.Point(113.262232, 23.154345)); 
+  }, 2000);
+</script>
