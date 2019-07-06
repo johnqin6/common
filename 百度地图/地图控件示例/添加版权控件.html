@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>添加版权控件</title>
+  <script src="http://api.map.baidu.com/getscript?v=3.0&ak=Ij3SnGGO0eQlT4aho0rdfeAOs56RqmEq"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    .map {
+      width: 100%;
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+  <div id="map" class="map"></div>
+</body>
+</html>
+<script>
+  // 创建地图实例
+  var map = new BMap.Map('map');
+  // 初始化地图，设置中心点坐标和地图级别
+  map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
+
+  // 设置自定义版权位置
+  var cr = new BMap.CopyrightControl({anchor: BMAP_ANCHOR_BOTTOM_LEFT});
+  // 添加版权控件
+  map.addControl(cr);
+  var bs = map.getBounds(); // 返回地图可视区域
+  cr.addCopyright({id: 1, content:"<a href='#' style='font-size: 20px; color: red; background: #fff;'>自定义版权</a>", bounds: bs});
+  // Copyright(id, content,bounds)类作为CopyrightControl.addCopyrigt()方法的参数
+  
+</script>

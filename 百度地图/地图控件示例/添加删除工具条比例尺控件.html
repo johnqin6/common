@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>添加删除工具条比例尺控件</title>
+  <script src="http://api.map.baidu.com/getscript?v=3.0&ak=Ij3SnGGO0eQlT4aho0rdfeAOs56RqmEq"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+    }
+    .map {
+      width: 100%;
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+  <div id="map" class="map"></div>
+  <div id="r-result">
+    <input type="button" value="添加" onclick="add_control();">
+    <input type="button" value="移除" onclick="remove_control();">
+  </div>
+  <p>在地图的左上、右上分别展示完整、缩略样式的缩放平移控件；同时在地图的左上方展示比例尺控件，点击按钮查看效果</p>
+</body>
+</html>
+<script>
+  // 创建地图实例
+  var map = new BMap.Map('map');
+  // 初始化地图，设置中心点坐标和地图级别
+  map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
+
+  // 左上角，添加比例尺
+  var top_left_control = new BMap.ScaleControl({ anchor: BMAP_ANCHOR_TOP_LEFT});
+  // 左上角，添加默认缩放平移控件
+  var top_left_navigation = new BMap.NavigationControl();
+  // 右上角，仅包含平移和缩放按钮
+  var top_right_navigation = new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL});
+  /**
+    缩放控件type有四种类型：
+    BMAP_NAVIGATION_CONTROL_SMALL: 仅包含平移和缩放按钮
+    BMAP_NAVIGATION_CONTROL_PAN:  仅包含平移按钮
+    BMAP_NAVIGATION_CONTROL_ZOOM: 仅包含缩放按钮
+  */
+
+  // 添加控件和比例尺
+  function add_control() {
+    map.addControl(top_left_control);
+    map.addControl(top_left_navigation);
+    map.addControl(top_right_navigation);
+  }
+
+  // 移除控件和比例尺
+  function remove_control() {
+    map.removeControl(top_left_control);
+    map.removeControl(top_left_navigation);
+    map.removeControl(top_right_navigation);
+  }
+</script>
