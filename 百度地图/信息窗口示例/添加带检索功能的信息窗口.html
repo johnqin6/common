@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>添加带检索功能的信息窗口</title>
+  <script src="http://api.map.baidu.com/getscript?v=3.0&ak=Ij3SnGGO0eQlT4aho0rdfeAOs56RqmEq"></script>
+  <script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+	<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+    }
+    .map {
+      float: left;
+      width: 100%;
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+  <div id="map" class="map"></div>
+  <div id="result">
+    <input type="button" value="默认样式" onclick="searchInfoWindow.open(marker);">
+    <input type="button" value="样式1" onclick="openInfoWindow1()">
+    <input type="button" value="样式2" onclick="openInfoWindow2()">
+    <input type="button" value="样式3" onclick="openInfoWindow3()">
+  </div>
+</body>
+</html>
+<script>
+  var content =
+	"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>天安门</h4>" + 
+	"<img style='float:right;margin:4px' id='imgDemo' src='../images/logo.png' width='139' height='104' title='天安门'/>" + 
+	"<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>天安门坐落在中国北京市中心,故宫的南侧,与天安门广场隔长安街相望,是清朝皇城的大门...</p>" + 
+	"</div>";
+  var map = new BMap.Map('map');
+  var point = new BMap.Point(116.417854, 39.92198); 
+  var marker = new BMap.Marker(point); // 创建标注
+  map.centerAndZoom(point, 15);
+
+  // 创建检索信息窗口对象
+  var searchInfoWindow = null;
+  searchInfoWindow = new BMapLib.SearchInfoWindow(map, content, {
+    title: '百度大侠',  
+    width: 290,
+    height: 105,
+    panel: 'panel',   // 检索结果面板
+    enableAutoPan: true,   // 自动平移
+    searchTypes: [
+      BMAPLIB_TAB_SEARCH,   //周边检索
+      BMAPLIB_TAB_TO_HERE,  // 到这里去
+      BMAPLIB_TAB_FROM_HERE,  // 从这里出发
+    ]
+  });
+
+  marker.enableDragging();  // marker可拖拽
+
+  marker.addEventListener('click', function(e) {
+    searchInfoWindow.open(marker);
+  });
+  map.addOverlay(marker); // 地图中添加marker
+
+  // 样式1
+  var searchInfoWindow1 = new BMapLib.SearchInfoWindow(map, '信息框1内容', {
+    title: '百度大侠',  
+    panel: 'panel',   // 检索结果面板
+    enableAutoPan: true,   // 自动平移
+    searchTypes: [
+      BMAPLIB_TAB_SEARCH,   //周边检索
+      BMAPLIB_TAB_TO_HERE,  // 到这里去
+    ]
+  })
+  
+  function openInfoWindow1() {
+    searchInfoWindow1.open(new BMap.Point(116.319852, 40.058));
+  }
+
+  // 样式2
+  var searchInfoWindow2 = new BMapLib.SearchInfoWindow(map, '信息框1内容', {
+    title: '百度大侠2',  
+    panel: 'panel',   // 检索结果面板
+    enableAutoPan: true,   // 自动平移
+    searchTypes: [
+      BMAPLIB_TAB_SEARCH,   //周边检索
+    ]
+  })
+  
+  function openInfoWindow2() {
+    searchInfoWindow2.open(new BMap.Point(116.319852, 40.058));
+  }
+
+  // 样式3
+  var searchInfoWindow3 = new BMapLib.SearchInfoWindow(map, '信息框1内容', {
+    title: '百度大侠3',  
+    height: 50,
+    width: 290,
+    panel: 'panel',   // 检索结果面板
+    enableAutoPan: true,   // 自动平移
+    searchTypes: [
+    ]
+  })
+  
+  function openInfoWindow3() {
+    searchInfoWindow3.open(new BMap.Point(116.319852, 40.058));
+  }
+</script>
