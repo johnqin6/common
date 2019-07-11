@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>鼠标绘制点线面</title>
+  <script src="http://api.map.baidu.com/getscript?v=3.0&ak=Ij3SnGGO0eQlT4aho0rdfeAOs56RqmEq"></script>
+ <!--加载鼠标绘制工具-->
+ <script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>
+ <link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />
+ <!--加载检索信息窗口-->
+ <script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>
+ <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" />
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+    }
+    .map {
+      float: left;
+      width: 100%;
+      height: 500px;
+    }
+    dl,dt,dd,ul,li{
+		margin:0;
+		padding:0;
+		list-style:none;
+	}
+	p{font-size:12px;}
+	dt{
+		font-size:14px;
+		font-family:"微软雅黑";
+		font-weight:bold;
+		border-bottom:1px dotted #000;
+		padding:5px 0 5px 5px;
+		margin:5px 0;
+	}
+	dd{
+		padding:5px 0 0 5px;
+	}
+	li{
+		line-height:28px;
+	}
+  </style>
+</head>
+<body>
+  <div id="map" class="map"></div>
+  <div id="result">
+		<input type="button" value="获取绘制的覆盖物个数" onclick="alert(overlays.length)"/>
+		<input type="button" value="清除所有覆盖物" onclick="clearAll()"/>
+	</div>
+</body>
+</html>
+<script>
+  var map = new BMap.Map('map');
+  map.centerAndZoom('永城', 15);
+
+  map.enableScrollWheelZoom();
+
+  var overlays = [];
+  var overlaycomplete = function(e) {
+    overlays.push(e.overlay);
+  };
+
+  // 样式配置
+  var styleOptions = {
+    strokeColor: 'red',
+    fillColor: 'red',  // 填充颜色, 参数为空时不填充
+    strokeWeight: 3,
+    strokeOpacity: 0.8,
+    fillOpacity: 0.6,
+    strokeStyle: 'solid'  // 边线的样式， solid或dashed
+  }
+
+  // 实例化鼠标绘制工具
+  var drawingManger = new BMapLib.DrawingManager(map, {
+    isOpen: false,  // 是否开启绘制模式
+    enableDrawingTool: true, // 是否显示工具栏
+    drawingToolOptions: {
+      anchor: BMAP_ANCHOR_TOP_RIGHT,  // 位置
+      offset: new BMap.Size(5, 5)   // 偏移量
+    },
+    circleOptions: styleOptions,  // 圆的样式
+    polylineOptions: styleOptions, // 线的样式
+    polygonOptions: styleOptions,  // 多边形的样式
+    rectangleOptions: styleOptions  // 矩形的样式
+  });
+
+  // 添加鼠标绘制工具监听事件，用于获取绘制结果
+  drawingManger.addEventListener('overlaycomplete', overlaycomplete);
+
+  function clearAll() {
+    for (var i = 0; i < overlays.length; i++) {
+      map.removeOverlay(overlays[i]);
+    }
+    overlays.length = 0;
+  }
+</script>
