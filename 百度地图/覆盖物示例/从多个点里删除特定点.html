@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>从多个点里删除特定点</title>
+  <script src="http://api.map.baidu.com/getscript?v=3.0&ak=Ij3SnGGO0eQlT4aho0rdfeAOs56RqmEq"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+    }
+    .map {
+      float: left;
+      width: 100%;
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+  <div id="map" class="map"></div>
+  <input type="button" onclick="deletePoint()" value="删除id=1"/>
+</body>
+</html>
+<script>
+  var map = new BMap.Map('map');
+  var point = new BMap.Point(116.404, 39.915);
+
+  map.centerAndZoom(point, 11);
+  map.enableScrollWheelZoom();
+  
+  // 编写自定义函数，创建标注
+  function addMarker(point, label) {
+    var marker = new BMap.Marker(point);
+    map.addOverlay(marker);
+    marker.setLabel(label)
+  }
+
+  // 随即向地图添加25个标注
+  var bounds = map.getBounds(); // 获取地理坐标的矩形区域
+  var sw = bounds.getSouthWest();  // 返回矩形区域的西南角
+  var ne = bounds.getNorthEast();  // 返回矩形区域的东北角
+
+  var lngSpan = Math.abs(sw.lng - ne.lng);
+  var latSpan = Math.abs(ne.lat - sw.lat);
+
+  for( var i = 0; i < 25; i++) {
+    var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+    var label = new BMap.Label("我是id=" + i, {
+      offset: new BMap.Size(20, -10)
+    })
+    addMarker(point, label);
+  }
+
+  function deletePoint() {
+    var allOverlay = map.getOverlays();
+    for (var i = 0; i < allOverlay.length -1; i++) {
+      if (allOverlay[i].getLabel().content == "我是id=1"){
+        map.removeOverlay(allOverlay[i]);
+        return false;
+      }
+    }
+  }
+  console.log(111);
+
+</script>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>传递事件参数</title>
+  <script src="http://api.map.baidu.com/getscript?v=3.0&ak=Ij3SnGGO0eQlT4aho0rdfeAOs56RqmEq"></script>
+  <style>
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+    }
+    .map {
+      float: left;
+      width: 100%;
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+  <div id="map" class="map"></div>
+</body>
+</html>
+<script>
+  var map = new BMap.Map('map');
+  var point = new BMap.Point(116.417854,39.921988);
+
+  map.centerAndZoom(point, 15);
+  
+  // 添加标注
+  var marker = new BMap.Marker(point);
+  map.addOverlay(marker);
+  marker.addEventListener('click', overlayHandle);
+
+  // 添加折线
+  var polyline = new BMap.Polyline([
+    new BMap.Point(116.383752, 39.91334),
+		new BMap.Point(116.38792, 39.920866),
+		new BMap.Point(116.390867, 39.906532)
+  ], {
+    strokeColor: 'blue',
+    strokeWeight: 6,
+    strokeOpacity: 0.5
+  })
+  map.addOverlay(polyline);
+  polyline.addEventListener('click', overlayHandle);
+
+  // 添加圆
+  var circle = new BMap.Circle(new BMap.Point(116.415157, 39.914004),
+  500,
+  {
+    strokeColor: 'blue',
+    strokeWeight: 6,
+    strokeOpacity: 0.5
+  });
+  map.addOverlay(circle);
+  circle.addEventListener('click', overlayHandle);
+
+  // 获取marker的属性
+  function overlayHandle(e) {
+    console.log(e);
+    var p = e.target;
+    if (p instanceof BMap.Marker) {
+      console.log("该覆盖物是点，点的坐标是：" + p.getPosition().lng + "," + p.getPosition().lat)
+    } else if (p instanceof BMap.Circle) {
+      console.log("该覆盖物是圆，圆的半径是：" + p.getRadius() + "，圆的中心点坐标是：" + p.getCenter().lng + "," + p.getCenter().l)
+    } else if (p instanceof BMap.Polyline) {
+      console.log("该覆盖物是折线，所画点的个数是：" + p.getPath().length)
+    } else {
+      console.log("无法获知该覆盖物类型")
+    }
+  }
+</script>
