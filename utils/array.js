@@ -80,7 +80,7 @@
  *     + ['a', 'b', 'c'].fill(7) -> [7, 7, 7]
  *     + ['a', 'b', 'c'].fill(7, 1, 2) -> ["a", 7, "c"]  
  *   - flat()
- *     + 将嵌套的数组“拉平”, 参数：整数，表示想要拉平的层数，默认为1 
+ *     + 将嵌套的数组“拉平”（数组扁平化）, 参数：整数，表示想要拉平的层数，默认为1 
  *     + [1, 2, [3, [4, 5]]].flat() -> [1, 2, 3, [4, 5]]
  *     + [1, 2, [3, [4, 5]]].flat(2) -> [1, 2, 3, 4, 5]
  *   - flatMap()
@@ -280,4 +280,43 @@ function countWithArrItem(arr) {
       t[c] = t[c] ? ++ t[c] : 1;
       return t;
   }, {});
+}
+
+/**
+ * 扁平化数组（将多维数组转为一维数组）递归实现
+ * @param {*} arr 
+ */
+function arrFlat(arr) {
+  var _arr = [];
+  arr.forEach(item => {
+    if (item instanceof Array) {
+      _arr = _arr1.concat(arrFlat(item));
+    } else {
+      _arr.push(item);
+    }
+  });
+  return _arr;
+}
+
+/**
+ * 扁平化数组（将多维数组转为一维数组）使用ES6的reduce实现
+ * @param {*} arr 
+ */
+function arrFlat2(arr) {
+  return arr.reduce((prev, cur) => {
+    return prev.concat(Array.isArray(cur) ? arrFlat2(cur) : cur);
+  }, []);
+}
+
+/**
+ * 扁平化数组（将多维数组转为一维数组）将多维数组转为字符串，再转为一维数组
+ * @param {*} arr 
+ */
+function arrFlat3(arr) {
+  return arr.toString().split(',').map(item => {
+    if (typeof item == 'number') {
+      item = parseInt(item);
+    }
+    return item;
+  });
 }
