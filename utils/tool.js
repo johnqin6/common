@@ -345,47 +345,6 @@ function unique(arr) {
   return result
 }
 
-// Set简单实现
-window.Set = window.Set || (function () {
-  function Set(arr) {
-    this.items = arr ? unique(arr) : [];
-    this.size = this.items.length; // Array的大小
-  }
-  Set.prototype = {
-    add: function (val) {
-      // 添加元素，如元素已存在，则跳过，返回Set 结构本身
-      if (!this.has(val)) {
-        this.items.push(val);
-        this.size++;
-      }
-      return this;
-    },
-    clear: function() {
-      // 清除所有成员, 没有返回值
-      this.items = [];
-      this.size = 0;
-    },
-    delete: function (val) {
-      // 删除某一个值，返回一个布尔值，表示删除是否成功
-      return this.items.some((v, i) => {
-        if (v === val) {
-          this.items.splice(i, 1);
-          return true;
-        }
-        return false;
-      })
-    },
-    has: function(val) {
-      // 返回一个布尔值， 表示该值是否为Set的成员
-      return this.items.some(v => v === val);
-    },
-    values: function() {
-      return this.items;
-    }
-  }
-  return Set;
-}());
-
 /**
  * 生成一个重复的字符串，有n个str组成，可修改为填充为数组等
  * @param {String} str 
@@ -712,6 +671,47 @@ Array.prototype.find = Array.prototype.find || function find(fn, ctx){
   
   return result
 }
+
+// Set简单实现
+window.Set = window.Set || (function () {
+  function Set(arr) {
+    this.items = arr ? unique(arr) : [];
+    this.size = this.items.length; // Array的大小
+  }
+  Set.prototype = {
+    add: function (val) {
+      // 添加元素，如元素已存在，则跳过，返回Set 结构本身
+      if (!this.has(val)) {
+        this.items.push(val);
+        this.size++;
+      }
+      return this;
+    },
+    clear: function() {
+      // 清除所有成员, 没有返回值
+      this.items = [];
+      this.size = 0;
+    },
+    delete: function (val) {
+      // 删除某一个值，返回一个布尔值，表示删除是否成功
+      return this.items.some((v, i) => {
+        if (v === val) {
+          this.items.splice(i, 1);
+          return true;
+        }
+        return false;
+      })
+    },
+    has: function(val) {
+      // 返回一个布尔值， 表示该值是否为Set的成员
+      return this.items.some(v => v === val);
+    },
+    values: function() {
+      return this.items;
+    }
+  }
+  return Set;
+}());
 
 // 利用performance.timing进行性能分析
 window.onload = function() {
