@@ -127,6 +127,18 @@ function isArrayLike(val) {
 }
 
 /**
+ * 判断字符是否空NULL
+ * @param {*} chars 
+ */
+function isNULL( chars ) {
+  if (chars == null)
+    return true;
+  if (jsTrim(chars).length==0)
+    return true;
+  return false;
+}
+
+/**
  * 检查val是否是空
  * 如果是null，直接返回true；如果是类数组，判断数据长度；如果是Object对象，判断是否具有属性；
  * 如果是其他数据，直接返回false(也可改为返回true)
