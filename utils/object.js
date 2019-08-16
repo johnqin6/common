@@ -1,5 +1,26 @@
 /**
- * 对象相关方法
+ * 对象相关方法 
+ * - Object.assign() 用于克隆合并对象
+ *   Object.assign({}, {name: 'john'})  --> {name: 'john'}
+ *   Object.assign({age: 18}, {name: 'john'})  --> {age: 18, name: 'john'}
+ * - Object.is()  用于判断两个值是否相同
+ *   Object.is('a', 'b')  --> false
+ * - Object.keys()  用于返回对象可枚举的属性和方法的名称 
+ *   Object.keys({name: 'john', age: 18})  --> ['name', 'age']
+ * - Object.defineProperty()
+ *   + 劫持变量的set和get方法,将属性添加到对象，或修改现有属性的特性
+ *   var a = {};
+ *   Object.defineProperty(a, 'name', {
+ *     value : 'kong',
+ *     enumerable : true	//该属性是否可枚举
+ *   })
+ * - Object.defineProperties()
+ *   + 可添加多个属性,与Object.defineProperty()对应
+ * - isPrototypeOf  
+ *   + 确定一个对象是否存在于另一个对象的原型链中
+ *   function a(){}
+ *   var b = new a();
+ *   console.log(a.prototype.isPrototypeOf(b));//true
  */
 
 /**
@@ -58,3 +79,4 @@ function clone(val, deep) {
   }
   return val
 }
+
