@@ -103,3 +103,20 @@ function random(lower, upper) {
   upper = +upper || 0
   return Math.random() * (upper - lower) + lower
 }
+
+/**
+ * 金钱格式化  1234567, 1,234,567
+ * @param {*} str 
+ */
+function formatCash(str) {
+  str = str.toString();
+  var reg = /\B(?=(\d{3})+(?!\d))/g;
+  return str.replace(reg, ',');
+}
+
+function formatCash2(str) {
+  str = str.toString();
+  return str.split('').reverse().reduce((prev, next, index) => {
+    return ((index % 3) ? next : (next + ',')) + prev
+  })
+}
