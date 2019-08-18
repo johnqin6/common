@@ -157,6 +157,14 @@ function sum2(arr) {
 }
 
 /**
+ * 求平均值
+ * @param {*} arr 
+ */
+function average(arr) {
+  return sum2(arr) / arr.length;
+}
+
+/**
  * 筛选数组中元素为奇数的项
  * @param {*} arr 
  */
@@ -251,6 +259,18 @@ function descOrder(arr) {
 }
 
 /**
+ * 数组随机排序
+ * @param {*} arr 
+ */
+function randomSort(arr) {
+  var _arr = [...arr];
+  _arr.sort(function(a, b) {
+    return Math.random() - 0.5;
+  });
+  return _arr;
+}
+
+/**
  * 数组选项对调
  * @param {Array} arr 
  * @param {Number} from 
@@ -320,3 +340,45 @@ function arrFlat3(arr) {
     return item;
   });
 }
+
+/**
+ * 将类数组转换为数组的方法
+ * @param {*} ary 
+ */
+function formArray(ary) {
+  var arr = [];
+  if (Array.isArray(ary)) {
+    arr = ary;
+  } else {
+    arr = Array.prototype.slice.call(ary);
+  }
+  return arr;
+}
+
+/**
+ * 删除数组的某一个元素
+ * @param {*} arr 
+ * @param {*} ele 
+ */
+function removeArrEle(arr, ele) {
+  var index = arr.indexOf(ele);
+  if (index > -1) {
+    arr.splice(index, 1);
+  }
+  return arr;
+}
+
+ /*求两个集合的并集*/
+ function union (a, b) {
+  var newArr = a.concat(b);
+  return unique2(newArr);
+}
+
+/*求两个集合的交集*/
+function intersect (a, b) {
+  a = [...new Set(a)];
+  return a.filter(o => {
+    return b.includes(o);
+  });
+}
+
