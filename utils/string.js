@@ -1,5 +1,62 @@
 /**
  * 操作字符串相关方法
+ * ES5内置方法
+ * - charAt()  返回在指定位置的字符
+ *   + 'hello'.charAt(2)  --> '1'
+ * - charCodeAt()  返回在指定位置的字符的unicode编码
+ *   + 'hello'.charCodeAt(2)  --> 108
+ * - concat()   连接两个或更多字符串，并返回新的字符串
+ *   + 'hello'.concat(' world')  --> 'hello world'
+ * - fromCharCode()  将unicode编码转为字符
+ *   + String.fromCharCode(65)   --> 'A'
+ * - indexOf()   返回某个指定的字符串值在字符串中首次出现的位置
+ *   + 'hello'.indexOf('e')   --> 1
+ * - lastIndexOf()  返回某个指定的字符串值在字符串中在尾部开始搜索首次出现的位置
+ *   + 'hello'.lastInsexOf('l')  --> 1
+ * - repeat()  复制字符串指定次数，并将他们连接起来
+ *   + 'hello'.repeat(2)    --> 'hellohello'  
+ * - match()  查找一个或多个正则表达式的匹配
+ *   + 'hello'.match(/he/g)  --> true 
+ * - search()  查找与正则表达式相匹配的值, 有则返回匹配的字符串的起始位置，没有返回-1
+ *   + 'hello'.search('he')   --> 0 
+ * - replace()  在字符串中查找匹配的子串，并替换与正则表达式匹配的子串
+ *   + 'hello'.replace(/he/, 'w')  --> 'wllo'
+ * - slice(开始位置，结束位置)    提取字符串的片断，并在新的字符串中返回被提取的部分
+ *   + 'hello'.slice(2,4)  --> 'll'
+ *   + 'hello'.slice(2, -1)  --> 'll'
+ *   + 'hello'.slice(2)  --> 'llo'
+ * - substr(开始位置,长度)    从起始索引号提取字符串中指定数组的字符
+ *   + 'hello'.substr(2, 3)  --> 'llo'
+ * - substring(from, to)   提取字符串中两个指定的索引号之间的字符。参数：正整数值
+ *   + 'hello'.substring(2, 4)  --> 'll'
+ *   + 'hello'.substring(5, 2)  --> 'llo'
+ * - toLowerCase()  把字符串转换为小写
+ * - toLocaleLowerCase()   根据本地主机的语言环境把字符串转换为小写
+ *   + 'HelLo'.toLowerCase()   -->  'hello'
+ * - toUpperCase()   把字符串转换为大写
+ * - toLocaleUpperCase()   根据本地主机的语言环境把字符串转换为大写
+ *   + 'HelLo'.toUpperCase()   -->  'HELLO'
+ * - toString() 返回一个字符串
+ * - valueOf()   返回某个字符串对象的原始值
+ * - trim()  去除字符串两边的空白
+ *   + ' word '.trim()    -->  'word'
+ * - split()  把字符串分割为字符串数组
+ *   + 'hello world !!'.split(' ')  --> ['hello', 'world', '!!']
+ * ES6 新增方法
+ * - fromCodePoint()  
+ *   + 可以识别大于0xFFFF的字符，弥补了String.fromCharCode()方法的不足(不能识别大于0xFFFF的码点)
+ *   + String.fromCodePoint(0x20BB7)  -->  "𠮷"
+ * - trimStart()  去除字符串左边的空白
+ * - trimEnd()  去除字符串右边的空白
+ * - padStart()和padEnd() 补全头部和尾部字符串
+ *   + 'he'.padStart(5, 'ab')  --> 'abahe'
+ *   + 'he'.padEnd(5, 'ab')    --> 'heaba'
+ * - startsWith()   查看字符串是否以指定的字符串开头
+ *   + 'hello'.startsWith('he')  --> true
+ * - endsWith  查看字符串是否以指定的字符串结尾
+ *   + 'hello'.endsWith('o')  --> true
+ * - includes()   查找字符串中是否包含指定的字符串
+ *   + 'hello'.includes('o')   --> true
  */
 
 /**
