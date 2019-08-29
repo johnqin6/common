@@ -80,3 +80,10 @@ function clone(val, deep) {
   return val
 }
 
+/**
+ * 深克隆 使用es6的Array.from实现
+ * @param {*} val 
+ */
+function recursiveClone(val) {
+  return Array.isArray(val) ? Array.from(val, recursiveClone) : val;
+}
