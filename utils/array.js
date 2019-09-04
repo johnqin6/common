@@ -433,3 +433,22 @@ function transFromArrWithObj (obj, option) {
 //  {title: "A", items: [{title: 'A', name: 'aaa'},{title: 'A', name: 'aa'},{title: 'A', name: 'a'}]},
 //  {title: "B", items: [{title: 'B', name: 'bb'},{title: 'B', name: 'bb'}]}
 //]
+
+/**
+ * 对象数组排序
+ * @param {*} arr 
+ * @param {*} key 需要排序的属性
+ * @param {*} type ascd: 正序，desc: 倒序
+ */
+export function arrSort (arr, key, type) {
+  let _type = type || 'ascd'
+  let _arr = [...arr]
+  _arr.sort((a, b) => {
+    if (_type === 'ascd') {
+      return a[key].charCodeAt() - b[key].charCodeAt()
+    } else {
+      return b[key].charCodeAt() > a[key].charCodeAt()
+    }
+  })
+  return _arr
+}
