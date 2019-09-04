@@ -368,8 +368,8 @@ function removeArrEle(arr, ele) {
   return arr;
 }
 
- /*求两个集合的并集*/
- function union (a, b) {
+/*求两个集合的并集*/
+function union (a, b) {
   var newArr = a.concat(b);
   return unique2(newArr);
 }
@@ -382,3 +382,54 @@ function intersect (a, b) {
   });
 }
 
+/**
+ * 统计对象数组指定键对应的数组项
+ * @param {*} arr 
+ * @param {*} key 
+ * return Object  返回统计后的对象
+ */
+function countWithArrKey(arr, key) {
+  arr = [...arr];
+  let obj = {};
+  arr.forEach(item => {
+    if (!obj[item[key]]) {
+      obj[item[key]] = []
+    }
+    obj[item[key]].push(item);
+  });
+  return obj;
+}
+// var arr = [
+//   {title: 'A', name: 'aaa'},
+//   {title: 'A', name: 'aa'},
+//   {title: 'A', name: 'a'},
+//   {title: 'B', name: 'bb'},
+//   {title: 'B', name: 'bb'},
+// ]
+// obj = countWithArrKey(arr, 'title') 
+// => { 'A': [{title: 'A', name: 'aaa'},{title: 'A', name: 'aa'},{title: 'A', name: 'a'}],
+//      'B': [{title: 'B', name: 'bb'},{title: 'B', name: 'bb'}]}
+
+/**
+ * 将对象转化为指定键的数组
+ * @param {*} obj 目标对象
+ * @param {*} option 对象数组的键值配置
+ * return Array 
+ */
+function transFromArrWithObj (obj, option) {
+  let arr = [];
+  for (let key in obj) {
+    let _obj = {};
+    _obj[option.key1] = key;
+    _obj[option.key2] = obj[key];
+    arr.push(_obj);
+  }
+  return arr;
+}
+// var obj ={ 'A': [{title: 'A', name: 'aaa'},{title: 'A', name: 'aa'},{title: 'A', name: 'a'}],
+//      'B': [{title: 'B', name: 'bb'},{title: 'B', name: 'bb'}]}
+// var list = transFromArrWithObj(obj, {key1: 'title', key2: 'items'})
+// => [
+//  {title: "A", items: [{title: 'A', name: 'aaa'},{title: 'A', name: 'aa'},{title: 'A', name: 'a'}]},
+//  {title: "B", items: [{title: 'B', name: 'bb'},{title: 'B', name: 'bb'}]}
+//]
