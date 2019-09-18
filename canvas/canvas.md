@@ -156,4 +156,6 @@ cxt.strokeRect(230, 180, 150, 150)
 ## 绘制路径
 
 绘制路径方法：
-- moveTo(x, y): 
+- moveTo(x, y): 定义线条开始坐标
+- lineTo(x, y): 定义线条结束坐标
+
