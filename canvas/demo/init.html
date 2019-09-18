@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>canvas初学习</title>
+</head>
+<body>
+  <canvas id="canvas" width="400" height="300">抱歉，您的浏览器不支持canvas元素</canvas>
+</body>
+</html>
+<script>
+var canvas = document.getElementById('canvas')
+// 检测浏览器是否支持canvas，该方法是否存在 取得上下文对象
+if (canvas.getContext) {
+  // 获的2d上下文
+  var context = canvas.getContext('2d')
+  // 填充颜色为红色
+  context.fillStyle = 'red'
+  // 边框颜色为蓝色
+  context.strokeStyle = 'blue'
+  // 用指定的颜色填充矩形
+  context.fillRect(10, 10, 150, 150)
+  // 用指定的颜色为矩形描边
+  context.strokeRect(10, 10, 150, 150)
+
+  // 获取图像的数据URL 默认图片格式为png, 可自行设置格式
+  var imgURL = canvas.toDataURL('image/png')
+  // 添加一个img元素
+  var image = document.createElement('img')
+  // 将获取的图像的URL赋值给src属性
+  image.src = imgURL
+  // 将元素添加到页面
+  document.body.appendChild(image)
+}
+</script>
