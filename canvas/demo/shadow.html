@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>添加阴影</title>
+</head>
+<body>
+  <canvas id="canvas" width="600" height="500"></canvas>
+</body>
+</html>
+<script>
+var canvas = document.getElementById('canvas')
+var cxt = canvas.getContext('2d')
+
+// 设置阴影属性
+cxt.shadowOffsetX = 10
+cxt.shadowOffsetY = 10
+cxt.shadowBlur = 2 // 模糊度
+cxt.shadowColor = 'rgba(255, 0, 0, 0.5)'
+
+// 绘制矩形
+cxt.fillStyle = 'red'
+cxt.fillRect(10, 10, 100, 100)
+</script>

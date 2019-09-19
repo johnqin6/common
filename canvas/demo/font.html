@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>绘制文本</title>
+</head>
+<body>
+  <canvas id="canvas" width="900" height="500"></canvas>
+</body>
+</html>
+<script>
+var canvas = document.getElementById('canvas')
+var cxt =  canvas.getContext('2d')
+// 绘制填充字体
+cxt.fillStyle = 'red'
+cxt.font = 'bold 50px Arial' //字体样式
+cxt.textAlign = 'end' // 左对齐
+cxt.textBaseline = 'top' // 基线
+cxt.fillText('你好', 100, 100)
+
+// 绘制描边字体
+cxt.beginPath()
+cxt.strokeStyle = 'red'
+cxt.font = '50px Arial' //字体样式
+cxt.textBaseline = 'top' // 基线
+cxt.strokeText('hello world', 500, 100)
+</script>

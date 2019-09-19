@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>路径</title>
+</head>
+<body>
+  <canvas id="canvas" width="600" height="500"></canvas>
+</body>
+</html>
+<script>
+var canvas = document.getElementById('canvas')
+var cxt = canvas.getContext('2d')
+// 画斜线
+// 路径开始
+cxt.moveTo(0, 0)
+// 路径结束
+cxt.lineTo(200, 100)
+// 绘制路径
+cxt.stroke()
+
+// 画折线
+cxt.strokeStyle = 'red'
+cxt.moveTo(200, 0)
+cxt.lineTo(300, 100)
+cxt.lineTo(400, 0)
+cxt.stroke()
+
+// 画交叉线
+cxt.moveTo(400, 0)
+cxt.lineTo(600, 100)
+cxt.stroke()
+cxt.moveTo(400, 100)
+cxt.lineTo(600, 0)
+cxt.stroke()
+
+// 圆角路径
+cxt.lineWidth = 5
+cxt.lineCap = 'round' // 圆头
+// cxt.lineCap = 'butt' // 平头
+// cxt.lineCap = 'square' // 方头
+cxt.moveTo(50, 150)
+cxt.lineTo(150, 150)
+cxt.stroke()
+
+// 线条交汇为圆角
+cxt.beginPath() // 开始新的路径，之前路径设置再无影响
+cxt.strokeStyle = 'blue'
+cxt.lineJoin = 'round' // 相交为圆角
+// cxt.lineJoin = 'bevel' // 相交为斜角
+// cxt.lineJoin = 'miter' // 相交为尖角
+cxt.moveTo(200, 150)
+cxt.lineTo(300, 200)
+cxt.lineTo(200, 250)
+cxt.stroke()
+
+// 多色线条
+cxt.beginPath()
+cxt.strokeStyle = 'cyan'
+cxt.moveTo(350, 150)
+cxt.lineTo(400, 150)
+cxt.stroke()
+cxt.beginPath()
+cxt.strokeStyle = 'red'
+cxt.moveTo(400, 150)
+cxt.lineTo(450, 150)
+cxt.stroke()
+cxt.beginPath()
+cxt.strokeStyle = 'blue'
+cxt.moveTo(450, 150)
+cxt.lineTo(500, 150)
+cxt.stroke()
+
+// 绘制弧线
+cxt.beginPath()
+cxt.strokeStyle = 'red'
+cxt.lineWidth = 1
+cxt.moveTo(30, 350)
+cxt.arcTo(50, 350, 150, 200, 50) // 绘制弧
+cxt.stroke()
+
+// 闭合的弧线
+cxt.beginPath()
+cxt.strokeStyle = 'red'
+cxt.lineWidth = 1
+cxt.moveTo(130, 350)
+cxt.arcTo(150, 250, 350, 400, 100) // 绘制弧
+cxt.closePath()
+cxt.stroke()
+
+// 闭合的路径
+cxt.beginPath()
+cxt.strokeStyle = 'red'
+cxt.moveTo(400, 350)
+cxt.lineTo(450, 400)
+cxt.lineTo(500, 350)
+cxt.closePath()
+cxt.stroke()
+
+// 填充的路径
+cxt.beginPath()
+cxt.fillStyle = 'red'
+cxt.moveTo(500, 350)
+cxt.lineTo(550, 400)
+cxt.lineTo(600, 350)
+cxt.closePath()
+cxt.fill()
+</script>

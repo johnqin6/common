@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>圆</title>
+</head>
+<body>
+  <canvas id="canvas" width="900" height="500"></canvas>
+</body>
+</html>
+<script>
+var canvas = document.getElementById('canvas')
+var ctx = canvas.getContext('2d')
+// 实心圆
+ctx.beginPath() // 开始新的路径
+ctx.fillStyle = 'red'
+// 设置圆(x, y, r, 开始角度，结束角度，是否逆时针)
+ctx.arc(70, 70, 50, 0, 2 * Math.PI, false)
+ctx.closePath() // 关闭路径
+ctx.fill() // 填充圆
+
+// 空心圆
+ctx.beginPath()
+ctx.strokeStyle = 'blue'
+ctx.lineWidth = 2
+ctx.arc(200, 70, 50, 0, 2 * Math.PI)
+ctx.closePath()
+ctx.stroke()
+
+// 绘制同心圆
+ctx.beginPath()
+ctx.fillStyle = 'blue'
+ctx.arc(350, 70, 50, 0, 2 * Math.PI)
+ctx.closePath()
+ctx.fill()
+ctx.beginPath()
+ctx.fillStyle = '#fff'
+ctx.arc(350, 70, 20, 0, 2 * Math.PI)
+ctx.closePath()
+ctx.fill()
+
+// 绘制半圆
+ctx.beginPath()
+ctx.fillStyle = 'blue'
+ctx.arc(470, 70, 50, 0, Math.PI)
+ctx.closePath()
+ctx.fill()
+
+// 绘制描边半圆
+ctx.beginPath()
+ctx.strokeStyle = 'blue'
+ctx.arc(600, 70, 50, 0, Math.PI, true)
+ctx.closePath()
+ctx.stroke()
+
+// 绘制弧
+ctx.beginPath()
+ctx.strokeStyle = 'blue'
+ctx.arc(720, 70, 50, 0, 4, true)
+ctx.closePath()
+ctx.stroke()
+
+// 绘制实心弧
+ctx.beginPath()
+ctx.fillStyle = 'blue'
+ctx.arc(850, 70, 50, 0, 2, false)
+ctx.closePath()
+ctx.fill()
+</script>

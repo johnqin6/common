@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>变换</title>
+</head>
+<body>
+  <canvas id="canvas" width="900" height="500"></canvas>
+</body>
+</html>
+<script>
+var canvas = document.getElementById('canvas')
+var cxt = canvas.getContext('2d')
+// 将矩形旋转20度
+cxt.fillStyle = 'red'
+// 旋转20度
+cxt.rotate(20 * Math.PI / 180)
+cxt.fillRect(50, 20, 100, 50)
+
+// 缩放矩形(放大两倍)
+cxt.strokeStyle = 'blue'
+cxt.strokeRect(150, 10, 50, 25) // 原矩形
+// 放大两倍
+cxt.scale(2, 2)
+cxt.strokeRect(150, 10, 50, 25)
+
+// 平移矩形位置
+cxt.beginPath()
+cxt.fillRect(300, 10, 100, 50)
+// 向右向下平移50
+cxt.translate(50, 50)
+cxt.fillRect(300, 10, 100, 50)
+
+</script>
