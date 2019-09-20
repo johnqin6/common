@@ -8,9 +8,22 @@
 </head>
 <body>
   <canvas id="canvas" width="600" height="500"></canvas>
+  <button onclick="restore()">撤回一步</button>
 </body>
 </html>
 <script>
 var canvas = document.getElementById('canvas')
-var cxt = canvas.get
+var cxt = canvas.getContext('2d')
+cxt.fillStyle = 'blue'
+cxt.save() // 保存此时的属性
+cxt.fillStyle = 'yellow'
+cxt.translate(100, 100)
+cxt.save()
+cxt.fillStyle = 'red'
+cxt.fillRect(50, 50, 300, 300)
+// 回退函数
+function restore() {
+  cxt.restore() // 回退上一个状态
+  cxt.fillRect(50, 50, 300, 300)
+}
 </script>

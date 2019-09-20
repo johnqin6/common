@@ -515,8 +515,130 @@ cxt.fillRect(300, 10, 100, 50)
 ![变换](./images/transform.png)
 
 ## 绘制图像  
+2D绘制上下文内置了对图像的支持，如果想要把一张图绘制在画布上，需要使用`drawImage()`方法。
+该方法有三种不同的参数组合及使用方式 
 
+1. 使用最简单的`<img>`元素直接嵌入页面，再将图像绘制到画布上
+参数格式： drawImage(要绘制的图像, x, y), x,y表示图像的起点坐标    
+```javascript  
+cxt.drawImage(img, 10, 10)
+```
+2. 传入宽高控制画布上的图像尺寸
+参数格式： drawImage(要绘制的图像, x, y, w, h), x,y表示图像的起点坐标, w,h(图像的尺寸)    
+```javascript  
+cxt.drawImage(img, 10, 10, 50, 50)
+```  
 
+3. 传入9个参数
+前二种都是绘制图像的整体，而通过传入不同的参数，也可以只绘制图像的部分区域。
+参数格式： drawImage(要绘制的图像, ox, oy, ow, oh, mx, my, mw, mh)
+    ox,oy表示源图像的起点坐标, ow,oh(源图像的尺寸)  
+    mx,my表示目标图像的起点坐标, mw,mh(目标图像的尺寸)   
+```javascript  
+cxt.drawImage(img, 10, 10, 50, 50, 0, 0, 30, 30)
+```  
+
+4. 模式
+以在画布中绘制重复显示图像的效果，模式就是重复的图像，可以用于填充和描边图像。创建一个模式，要使用createPattern()方法，它接收两个参数：第一个参数是一个HTML<img>元素或者是表示图像的变量，第二个参数是表示如何重复显示的字符串，即“repeat”、"repeat-x"、"repeat-y"、“no-repeat”。再将此模式赋值给fillStyle()或strokeStyle()。最后画出矩形。
+
+代码演示   
+```html
+<body>
+  <canvas id="canvas" width="600" height="500"></canvas>
+  <img src="../images/car.png" alt="" id="img1">
+</body>
+<script>
+var canvas = document.getElementById('canvas')
+var cxt = canvas.getContext('2d')
+
+// 1. 将页面上的img标签绘制到画布
+var img1 = document.getElementById('img1') // 获得图片元素
+// 加载图像，只有图像加载完成后，才能将其绘制到画布上
+img1.onload = function () {
+  // 将图像绘制到画布 参数：图片对象，x,y
+  cxt.drawImage(img1, 10, 10)
+  
+  // 设置图片的宽高  参数：图片对象，x,y,w,h
+  cxt.drawImage(img1, 100, 10, 100, 100)
+
+  // 设置图片的全部参数  参数：图片对象，ox,oy,ow,oh, mx,my,mw,oh
+  cxt.drawImage(img1, 200, 50, 100, 100, 200, 50, 70, 70)
+}
+
+// 2. 直接获得外部图像资源，将其绘制到画布
+var img2 = new Image() // 表示嵌入一个图像对象实例
+img2.src = '../images/car.png'
+img2.onload = function () {
+  cxt.drawImage(img1, 10, 150, 100, 100)
+}
+
+// 3. 重复显示图像
+var img3 = new Image() // 表示嵌入一个图像对象实例
+img3.src = '../images/car.png'
+img3.onload = function () {
+  var pattern = cxt.createPattern(img3, 'repeat') // 创建模式并重复显示图像  
+  cxt.fillStyle = pattern  // 将模式赋值给填充
+  cxt.fillRect(0, 300, 600, 200) //画出矩形
+}
+</script>
+```
+
+效果图  
+![image](./images/image.png)   
+
+5. 图像合成
+还有两个运用到2D绘制上下文的操作方法：globalAlpha和globalCompositionOperation。
+
+globalAlpha是一个介于0和1之间值，它指定所有绘制的透明度，默认值为0。如果后续的绘制都基于相同的透明度，可以设置为适当的值，最后，再把它设置为默认值0（重置透明度）
+
+globalCompositionOperation 表示 后绘制的图像 怎样与先绘制的图像结合。它的属性值有：
+
+注：这里的 目标图像指后绘制的图形，源图像指前绘制的图像。
+![属性](./images/concat_attr.png)
+
+代码演示  
+```html
+<body>
+  <canvas id="canvas" width="900" height="600"></canvas>
+</body>
+<script>
+var canvas = document.getElementById('canvas')
+var cxt = canvas.getContext('2d')
+
+// 画一个蓝色矩形
+cxt.fillStyle = 'blue'
+cxt.fillRect(10, 10, 200, 200)
+
+// 修改全局透明度
+cxt.globalAlpha = 0.5
+
+// 绘制红色矩形,红色矩形在蓝色矩形的上面，这是根据文档流的结果
+cxt.fillStyle = 'red'
+cxt.fillRect(50, 50, 200, 200)
+
+// 重置全局透明度
+cxt.globalAlpha = 1
+
+// 图像结合
+cxt.fillStyle = 'red'
+cxt.fillRect(0, 300, 200, 100)
+
+cxt.fillStyle = 'blue'
+cxt.globalCompositeOperation = 'source-over' // 在目标元素之外显示源图像
+cxt.fillRect(50, 350, 200, 100)
+
+// 图像结合
+cxt.fillStyle = 'red'
+cxt.fillRect(300, 300, 100, 100)
+
+cxt.fillStyle = 'blue'
+cxt.globalCompositeOperation = 'destination-over' // 在源图像上方显示目标图像
+cxt.fillRect(350, 350, 100, 100)
+</script>
+```
+
+效果图  
+![合成图](./images/concat.png)
 
 ## 保存(save())和返回前一状态(restore)方法
 
@@ -526,6 +648,26 @@ cxt.fillRect(300, 10, 100, 50)
 
 设置一次属性和状态，就用save()方法保存一次。这样用restore()方法就可以逐级追溯到每次设置的属性和状态。  
 
-
-
-
+代码演示   
+```html
+<body>
+  <canvas id="canvas" width="600" height="500"></canvas>
+  <button onclick="restore()">撤回一步</button>
+</body>
+<script>
+var canvas = document.getElementById('canvas')
+var cxt = canvas.getContext('2d')
+cxt.fillStyle = 'blue'
+cxt.save() // 保存此时的属性
+cxt.fillStyle = 'yellow'
+cxt.translate(100, 100)
+cxt.save()
+cxt.fillStyle = 'red'
+cxt.fillRect(50, 50, 300, 300)
+// 回退函数
+function restore() {
+  cxt.restore() // 回退上一个状态
+  cxt.fillRect(50, 50, 300, 300)
+}
+</script>
+```

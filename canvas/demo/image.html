@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>绘制图像</title>
+</head>
+<body>
+  <canvas id="canvas" width="600" height="500"></canvas>
+  <img src="../images/car.png" alt="" id="img1">
+</body>
+</html>
+<script>
+var canvas = document.getElementById('canvas')
+var cxt = canvas.getContext('2d')
+
+// 1. 将页面上的img标签绘制到画布
+var img1 = document.getElementById('img1') // 获得图片元素
+// 加载图像，只有图像加载完成后，才能将其绘制到画布上
+img1.onload = function () {
+  // 将图像绘制到画布 参数：图片对象，x,y
+  cxt.drawImage(img1, 10, 10)
+  
+  // 设置图片的宽高  参数：图片对象，x,y,w,h
+  cxt.drawImage(img1, 100, 10, 100, 100)
+
+  // 设置图片的全部参数  参数：图片对象，ox,oy,ow,oh, mx,my,mw,oh
+  cxt.drawImage(img1, 200, 50, 100, 100, 200, 50, 70, 70)
+}
+
+// 2. 直接获得外部图像资源，将其绘制到画布
+var img2 = new Image() // 表示嵌入一个图像对象实例
+img2.src = '../images/car.png'
+img2.onload = function () {
+  cxt.drawImage(img1, 10, 150, 100, 100)
+}
+
+// 3. 重复显示图像
+var img3 = new Image() // 表示嵌入一个图像对象实例
+img3.src = '../images/car.png'
+img3.onload = function () {
+  var pattern = cxt.createPattern(img3, 'repeat') // 创建模式并重复显示图像  
+  cxt.fillStyle = pattern  // 将模式赋值给填充
+  cxt.fillRect(0, 300, 600, 200) //画出矩形
+}
+</script>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>图像合成</title>
+</head>
+<body>
+  <canvas id="canvas" width="900" height="600"></canvas>
+</body>
+</html>
+<script>
+var canvas = document.getElementById('canvas')
+var cxt = canvas.getContext('2d')
+
+// 画一个蓝色矩形
+cxt.fillStyle = 'blue'
+cxt.fillRect(10, 10, 200, 200)
+
+// 修改全局透明度
+cxt.globalAlpha = 0.5
+
+// 绘制红色矩形,红色矩形在蓝色矩形的上面，这是根据文档流的结果
+cxt.fillStyle = 'red'
+cxt.fillRect(50, 50, 200, 200)
+
+// 重置全局透明度
+cxt.globalAlpha = 1
+
+// 图像结合
+cxt.fillStyle = 'red'
+cxt.fillRect(0, 300, 200, 100)
+
+cxt.fillStyle = 'blue'
+cxt.globalCompositeOperation = 'source-over' // 在目标元素之外显示源图像
+cxt.fillRect(50, 350, 200, 100)
+
+// 图像结合
+cxt.fillStyle = 'red'
+cxt.fillRect(300, 300, 100, 100)
+
+cxt.fillStyle = 'blue'
+cxt.globalCompositeOperation = 'destination-over' // 在源图像上方显示目标图像
+cxt.fillRect(350, 350, 100, 100)
+</script>
