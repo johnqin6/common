@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>摄像截屏</title>
+</head>
+<body>
+  <p>
+    <button onclick="startRecord()">开始摄像</button>
+    <button onclick="screenshot()">截取图像</button>
+    <button onclick="stopRecord()">关闭摄像头</button>
+    <button onclick="uploadImage()">上传图像</button>
+  </p>
+  <video src="" id="video" width="200" height="150" 
+  controls autoplay></video>
+  <video src="" id="video2" width="200" height="150" 
+  controls autoplay></video>
+  <canvas id="canvas" width="200" height="150"></canvas>
+  <img id="image" width="200" height="150">
+</body>
+</html>
+<script>
+  var video = document.getElementById('video');
+  var video2 = document.getElementById('video2');
+  var image = document.getElementById('image');
+  var canvas = document.getElementById('canvas');
+  var context = canvas.getContext('2d');
+  var mediaStreamTrack = null;
+  var mediaRecorder = null;
+  var videoData = 'data:application/octet-stream;base64,';
+  var timeOut = null;
+  // 开始录像
+  function startRecord() {
+    // 旧版本
+    // if (navigator.getMedia) {
+    //     navigator.getMedia({
+    //         video: true
+    //     }, function(stream) {
+    //         console.log(stream);
+    //         mediaStreamTrack = stream.getTracks()[0];
+    //         video.src = (window.URL || window.webkitURL).createObjectURL(stream);
+    //         video.play();
+    //     }, function(err) {
+    //         console.log(err);
+    //     });
+    // }
+    // 想要获取一个最接近 1280x720 的相机分辨率
+      var constraints = { 
+        audio: true, 
+        video: { 
+          // width: 200, 
+          // height: 150,
+          facingMode: "environment"
+        } 
+      }; 
+      // 调用摄像头
+      navigator.mediaDevices.getUserMedia(constraints)
+      .then(function(mediaStream) {
+        // var video = document.querySelector('video');
+        mediaStreamTrack = typeof mediaStream.stop === 'function' ? mediaStream : mediaStream.getTracks()[1];
+        video.srcObject = mediaStream;
+        mediaStream = mediaStream;
+        // loadRecorder(mediaStream);
+        readRecorder(mediaStream);
+      })
+      .catch(function(err) { 
+        console.log(err.name + ": " + err.message); 
+      }); // 总是在最后检查错误
+  }
+  // 加载视频流数据
+  function loadRecorder(mediaStream) {
+    video.onloadedmetadata = function(e) {
+      console.log(e);
+      // var blob = new Blob([e.data], {
+      //   type: 'video/mp4'
+      // });
+      // 生成文件数据
+      var file = new File([e.data], {
+        type: 'video/mp4'
+      });
+      console.log(file);
+      var reader = new FileReader();
+      reader.onload = function (ev) {
+        // let buffer = new Buffer(reader.result);
+        console.log(ev.target.result);
+      }
+      // reader.readAsArrayBuffer(file); // buffer格式
+      // 将文件数据转为base64格式数据
+      reader.readAsDataURL(file); 
+      video.play();
+    };
+  }
+  // 读取视频数据
+  function readRecorder(mediaStream) {
+    console.log('开始录制');
+    // 获取视频数据
+    var i = 0;
+    mediaRecorder = new MediaRecorder(mediaStream);
+    mediaRecorder.ondataavailable = function(blob){
+      // console.log(blob.data);
+      var file = new File([blob.data], {
+        type: 'video/mp4'
+      });
+      // console.log(file);
+      var reader = new FileReader();
+      reader.onload = function (ev) {
+        // console.log(ev.target.result);
+        timeOut = setInterval(function() {
+          if (i >= 10) {
+            clearInterval(timeOut);
+            mediaRecorder.stop();
+            mediaStreamTrack && mediaStreamTrack.stop();
+            video2.src = videoData;
+            console.log(timeOut);
+          }
+          i++;
+          videoData += ev.target.result.replace('data:application/octet-stream;base64,','');
+          console.log(videoData);
+        }, 1000);
+      }
+      reader.readAsDataURL(file);
+    }
+    // mediaRecorder.start(1000); // 每秒拿一次数据
+    mediaRecorder.start();
+  }
+  // 截取图像
+  function screenshot() {
+    context.drawImage(video, 0, 0, 200, 150);
+  }
+  // 停止摄像
+  function stopRecord() {
+    console.log('结束录制');
+    if(mediaRecorder) {
+      clearInterval(timeOut);
+      mediaRecorder.stop();
+      mediaStreamTrack && mediaStreamTrack.stop();
+    } else {
+      alert('还未开始');
+    }
+  }
+
+  // 上传图像
+  function uploadImage() {
+    var imageData = canvas.toDataURL('image/png');
+    console.log(imageData);
+    image.src = imageData;
+  }
+</script>

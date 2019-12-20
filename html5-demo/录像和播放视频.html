@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>视频demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    .video-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      background: #000;
+    }
+    .video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;  /* 全屏播放 */
+    }
+    .video-controls {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 90px;
+      padding: 0 20px;
+      background: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .9));
+    }
+    .video-play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+    }
+  </style>
+</head>
+<body>
+  <p>录像</p>
+  <input type="file" name="video" id="video-input" accept="video/*" 
+  capture="user" onchange="videoChange()" />
+　<p style="font-size: 14px">附：
+　　　<br>只允许调起摄像头，不允许选择文件
+　　　<br>活体的视频大小不能超8Mb，时长不能超6秒
+　　　<br><span id='info'></span>
+　</p>
+  　<video id="video" width='300' height="300" controls autoplay></video>
+  <p>自定义视频播放功能</p>
+  <div class="video-container">
+    <video id="video1" src="./46f03cf32a1dcea9826ef0de6874ab69.mp4" autoplay></video>
+    <div class="video-controls">
+      <p>
+
+      </p>
+    </div>
+    <span class="video-play"></span>
+  </div>
+</body>
+</html>
+<script>
+  var videoBtn = document.getElementById('video-input');
+  var video = document.getElementById('video');
+  var videoInfo = document.getElementById('info');
+  function videoChange() {
+    var file = videoBtn.files[0];
+    var fileSize = (Math.round(file.size / 1024)).toFixed();
+    videoInfo.innerHTML = "视频大小约为：" + (fileSize / 1024).toFixed(2) + 'Mb,';
+    videoInfo.innerHTML += "视频path为：" + file.path + ', ';
+    var url = URL.createObjectURL(file);
+    videoInfo.innerHTML += "视频URL: " + url;
+    video.src = url;
+    var reader = new FileReader();
+    reader.onload = function(evt) {
+      //读取完成后，数据保存在对象的result属性中
+      var images = evt.target.result;
+      // 传给后台的数据
+      var fileModel = {
+        fileName: file.name,
+        fileSize: file.size,
+        fileContent: images,
+        fileType: file.type
+      }
+      console.log(fileModel);
+    }
+
+  }
+</script>
