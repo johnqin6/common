@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>获取本地音频和麦克风声音</title>
+  <style>
+    a,
+    button {
+      border: 0;
+      background-color: #448aff21;
+      text-decoration: none;
+      padding: 10px;
+      border-radius: 2px;
+      color: #448aff !important;
+    }
+  </style>
+</head>
+<body>
+  <p>获取本地音频</p>
+  <div>
+    <input type="file" accept="audio/*" capture="microphone" id="recorder">
+    <audio id="player" controls></audio>
+  </div>
+  <hr>
+  <p onclick="mike()">获取麦克风声音</p>
+  <div>
+    <a id="download">下载录音</a>
+    <button id="starting">开始</button>
+    <button id="end">停止</button>
+  </div>
+  <hr>
+  <p>录音</p>
+  <div>
+    <button onclick="startRecord()">开始录音</button>
+    <button id="start">开始</button>
+    <button id="stop">停止</button>
+    <div>
+      <audio id="audio" controls></audio>
+    </div>
+  </div>
+  <hr>
+
+  <p>录制视频</p>
+  <div>
+    <button onclick="openRecord()">开启录频</button>
+    <button id="closeRecord">关闭摄像头</button>
+    <button id="videoStart">开始录制</button>
+    <button id="videoStop">停止录制</button>
+    <div>
+      <p>live. <span class="timer"></span></p>
+      <video id="live" width="300" style="box-sizing: border-box; border: 4px solid #f48"></video>
+    </div>
+    <video src="./data/live.mp4" width="300" controls></video>
+  </div>
+</body>
+</html>
+<script>
+  var recorder = document.getElementById('recorder');
+  var player = document.getElementById('player');
+
+  // 获取本地录音
+  recorder.addEventListener('change', function(e){
+    var file = e.target.files[0];
+    console.log(file);
+    player.src = URL.createObjectURL(file);
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      console.log(ev, ev.target.result);
+    }
+  });
+
+  // 获取麦克风
+  var downloadLink = document.getElementById('download');
+  var end = document.getElementById('end');
+  var start = document.getElementById('starting')
+  function mike() {
+    // 查询用户的麦克风的访问权状态
+    navigator.permissions.query({
+      name: 'microphone'
+    }).then(res => {
+      if (res.state === 'granted') { // 用户之前已授权对麦克风的访问权
+        console.log('ok');
+      } else if(res.state === 'prompt') { // 用户尚未授予访问权，调用getUserMedia时会收到提示
+        console.log('ready');
+      } else if(res.start === 'denied') { // 系统或用户已显式屏蔽对麦克风的访问权，您将无法获得对其的访问权
+        console.log('已屏蔽麦克风访问权');
+      }
+      res.onchange = function() {
+        console.log('change');
+      }
+    });
+
+    // 开启麦克风
+    navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: false
+    }).then(stream => {
+      // 结束麦克风
+      end.addEventListener('click', e => {
+        mediaRecorder.stop();
+      });
+      // 开启麦克风
+      start.addEventListener('click', e => {
+        mediaRecorder.start();
+      });
+      var recorderChunks = [];
+      var mediaRecorder = new MediaRecorder(stream);
+
+      mediaRecorder.addEventListener('dataavailable', e => {
+        if (e.data.size > 0) {
+          recorderChunks.push(e.data);
+        }
+      });
+
+      mediaRecorder.addEventListener('stop', e => {
+        console.log('暂停');
+        downloadLink.href = URL.createObjectURL(new Blob(recorderChunks));
+        downloadLink.download = 'acetest.wav';
+      });
+
+      mediaRecorder.addEventListener('start', e => {
+        console.log('开始');
+      })
+    });
+  }
+
+  // 获取音频数据
+  var stopBtn = document.getElementById('stop');
+  var startBth = document.getElementById('start');
+  function startRecord(){
+    navigator.mediaDevices.getUserMedia({
+      audio: true
+    }).then(stream => {
+      // 停止录音
+      stopBtn.addEventListener('click', e => {
+        mediaRecorder.stop();
+      });
+
+      // 开始录音
+      startBth.addEventListener('click', e => {
+        mediaRecorder.start();
+      });
+
+      // 获取音频数据
+      var recordedChunks = [];
+      var mediaRecorder = new MediaRecorder(stream);
+      mediaRecorder.addEventListener('dataavailable', function(e){
+        if (e.data.size > 0) {
+          recordedChunks.push(e.data);
+        }
+      });
+
+      mediaRecorder.addEventListener('stop', function() {
+        console.log('暂停');
+        var audio = document.getElementById('audio');
+        audio.src = URL.createObjectURL(new Blob(recordedChunks));
+        audio.play();
+      });
+
+      mediaRecorder.addEventListener('start', e => {
+        console.log('开始');
+      });
+    });
+  }
+  
+  // 录制视频
+  var n = 0;
+  var timer; 
+  var videoStart = document.getElementById('videoStart');
+  var videoStop = document.getElementById('videoStop');
+
+  // 开启录制
+  function openRecord() {
+    // 开启摄像头
+    navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: true
+    }).then(stream => {
+      var liveVideo = document.getElementById('live');
+      var closeRecord = document.getElementById('closeRecord');
+      var mediaStreamTrack = typeof stream.stop === 'function' ? stream : stream.getTracks()[1];
+      liveVideo.srcObject = stream;
+      liveVideo.play();
+
+      videoStop.addEventListener('click', stopLive);
+      videoStart.addEventListener('click', e => {
+        startLive(stream);
+      });
+
+      // 关闭摄像头
+      closeRecord.addEventListener('click', () => {
+        // stopLive();
+        mediaStreamTrack && mediaStreamTrack.stop();
+      });
+    });
+
+    // 显示录制的秒数
+    function logger() {
+      var timerEl = document.querySelector('.timer');
+      timer = setInterval(() => {
+        n += 1;
+        timerEl.textContent = `${n}s`;
+      }, 1000);
+    }
+
+    // 暂停后下载视频
+    function downloadVideo(chunks) {
+      let downloadLink = document.createElement('a');
+      downloadLink.href = URL.createObjectURL(
+        new Blob(chunks, {
+          type: 'application/video'
+        })
+      );
+      // downloadLink.download = 'live.webm';
+      // downloadLink.download = 'live.ogg';
+      downloadLink.download = 'live.mp4';
+      downloadLink.click();
+    }
+
+    // 结束录制
+    function stopLive() {
+      clearInterval(timer);
+      n = 0;
+      if (mediaRecorder){
+        mediaRecorder.stop();
+      } else {
+        alert('还没有开始');
+      }
+    }
+
+    // 开始录制
+    function startLive(stream) {
+      let recordedChunks = [];
+      mediaRecorder = new MediaRecorder(stream);
+      mediaRecorder.start();
+
+      mediaRecorder.addEventListener('dataavailable', e => {
+        if (e.data.size > 0) recordedChunks.push(e.data);
+      });
+
+      mediaRecorder.addEventListener('stop', () => {
+        console.log('停止，自动下载');
+        downloadVideo(recordedChunks);
+      });
+
+      mediaRecorder.addEventListener('start', e => {
+        console.log('开始录制');
+      });
+    }
+  }
+</script>
