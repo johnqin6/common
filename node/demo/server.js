@@ -24,6 +24,7 @@ const server = http.createServer((req, res) => {
         res.end(err);
       }
       console.log(str);
+      res.writeHead(200, { 'content-type':'text/html;charset=utf-8'});
       res.end(str);
     });
   }
