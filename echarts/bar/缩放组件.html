@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>柱状图</title>
+  <script src="../../node_modules/echarts/dist/echarts.js"></script>
+  <style>
+    .echart {
+      float: left;
+      width: 600px;
+      height: 400px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="echart" id="barEchart1"></div>
+  <div class="echart" id="barEchart2"></div>
+  <div class="echart" id="barEchart3"></div>
+</body>
+
+</html>
+<script>
+  var echart1 = echarts.init(document.getElementById('barEchart1'));
+  var dataCount = 10;
+  var data = generateData(dataCount);
+  console.log(data);
+  var option = {
+    title: {
+      text: echarts.format.addCommas(dataCount) + ' Data',
+      left: 10
+    },
+    toolbox: {
+      feature: {
+        dataZoom: {
+          yAxisIndex: false
+        },
+        saveAsImage: {
+          pixelRatio: 2
+        }
+      }
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      }
+    },
+    grid: {
+      bottom: 90
+    },
+    dataZoom: [{ // 滑动显示
+      type: 'inside',
+      show: true,
+      start: 60,
+      end: 100,
+      orient: 'horizontal',
+      preventDefaultMouseMove: false,
+      zoomOnMouseWheel: false,
+      zoomLock: true
+      // , moveOnMouseMove: false
+    }, {
+      show: true,
+      type: 'slider',
+      realtime: false,
+      bottom: 0
+    }],
+    xAxis: {
+      data: data.categoryData,
+      silent: false,
+      splitLine: {
+        show: false
+      },
+      splitArea: {
+        show: false
+      }
+    },
+    yAxis: {
+      splitArea: {
+        show: false
+      }
+    },
+    series: [{
+      type: 'bar',
+      data: data.valueData,
+      // Set `large` for large data amount
+      large: true
+    }]
+  };
+  echart1.setOption(option);
+  // 生成数据
+  function generateData(count) {
+    var baseValue = Math.random() * 1000;
+    var time = +new Date(2011, 0, 1);
+    var smallBaseValue;
+
+    function next(idx) {
+      smallBaseValue = idx % 30 === 0 ?
+        Math.random() * 700 :
+        (smallBaseValue + Math.random() * 500 - 250);
+      baseValue += Math.random() * 20 - 10;
+      return Math.max(
+        0,
+        Math.round(baseValue + smallBaseValue) + 3000
+      );
+    }
+
+    var categoryData = [];
+    var valueData = [];
+
+    for (var i = 0; i < count; i++) {
+      categoryData.push(echarts.format.formatTime('yyyy-MM-dd\nhh:mm:ss', time));
+      valueData.push(next(i).toFixed(2));
+      time += 1000;
+    }
+
+    return {
+      categoryData: categoryData,
+      valueData: valueData
+    };
+  }
+</script>
