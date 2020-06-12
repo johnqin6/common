@@ -447,8 +447,40 @@ export function arrSort (arr, key, type) {
     if (_type === 'ascd') {
       return a[key].charCodeAt() - b[key].charCodeAt()
     } else {
-      return b[key].charCodeAt() > a[key].charCodeAt()
+      return b[key].charCodeAt() - a[key].charCodeAt()
     }
   })
   return _arr
+}
+
+/**
+ * 根据对象数组的相同属性整合数组
+ * @param {*} arr 
+ * @param {*} key 
+ */
+export function transformArrWithArr (arr, key) {
+  let result = [];
+  let keys = [];
+  for (let i = 0, len = arr.length; i < len; i++) {
+    if (keys.includes(arr[i][key])) {
+      result = addToArr(result, arr[i])
+    } else {
+      keys.push(arr[i][key])
+      result.push({
+        [key]: arr[i][key],
+        list: [].concat(arr[i])
+      })
+    }
+  }
+  keys = undefined
+  return result
+
+  function addToArr(list, item) {
+    for (let j = 0, len = list.length; j < len; j++) {
+      if (list[j][key] === item[key]) {
+        list[j].list.push(item)
+      }
+    }
+    return list
+  }
 }
